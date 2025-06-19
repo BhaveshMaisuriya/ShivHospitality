@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets/css/megamenuv01.css"
+      media="all"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        type="text/css"
+        href="assets/css/megamenuv01.css"
+        media="all"
+    /></noscript>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets/css/responsivev02.css"
+      media="all"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        type="text/css"
+        href="assets/css/responsivev02.css"
+        media="all"
+    /></noscript>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="assets/css/ind-stylev01.css"
+      media="all"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        type="text/css"
+        href="assets/css/ind-stylev01.css"
+        media="all"
+    /></noscript>
+    <link rel="stylesheet" type="text/css" href="assets/css/slick.css" />
+    <noscript
+      ><link rel="stylesheet" type="text/css" href="assets/css/slick.css"
+    /></noscript>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta
+      name="keywords"
+      content="Hospitality, Hospitality management, hotel management, hospitality Near me"
+    />
+    <meta name="author" content="Shiv Hospitality" />
+    <meta name="robots" content="INDEX, FOLLOW" />
+    <meta name="description" content="Welcome to Shiv Hospitality" />
+    <meta
+      property="og:title"
+      content="Shiv Hospitality offers premier hospitality management services in USA, ensuring exceptional guest experiences."
+    />
+    <meta property="og:url" content="https://www.vhhospitality.net/" />
+    <meta property="og:description" content="Welcome to Shiv Hospitality" />
+    <link rel="canonical" href="index.html" />
+    <meta
+      property="og:image"
+      content="https://www.vhhospitality.net/assets/images/logo/favicon.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/logo/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/logo/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/logo/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/images/logo/site.html" />
+    <!-- Meta Tag End -->
+    <!--title-->
+    <title>Shiv Hospitality | Hospitality Management Services in USA</title>
+    <script type="text/javascript" src="assets/js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" defer src="assets/js/custom.js"></script>
+    <script defer src="assets/js//notiflix-aio-2.7.0.min.js"></script>
+    <script type="text/javascript" src="assets/js/validate.js"></script>
+    <script type="text/javascript" defer src="assets/js/IISMethods.js"></script>
+    <script>
+      //india mobile no validation
+      jQuery.validator.addMethod(
+        "mobileno",
+        function (value, element) {
+          return this.optional(element) || /^[0]?[6789]\d{9}$/i.test(value);
+        },
+        "Invalid mobile no"
+      );
+      //only for number
+      jQuery.validator.addMethod(
+        "numberonly",
+        function (value, element) {
+          return this.optional(element) || /^[0-9]+$/i.test(value);
+        },
+        "Invalid Number"
+      );
+
+      function numbonly(e) {
+        var k = e.which;
+        var ok =
+          (k >= 48 && k <= 57) || // 0-9
+          k == 8 || //backspace
+          k == 0 || //arrow key
+          k == 13 || //enter
+          k == 46; //. sign
+        if (!ok) {
+          e.preventDefault();
+        }
+      }
+      $("body").on("click", ".close-button-modal", function () {
+        $(".map-details-modal").addClass("hidden");
+      });
+      $("body").on("click", ".btnenquiry", function () {
+        $(".map-details-modal").removeClass("hidden");
+        var eventid = $(this).data("id");
+        var portfolioid = $(this).data("portfolioid");
+        $("#enquiryForm #eventdate").val("2025-06-18");
+        // listevent(eventid, portfolioid);
+        listportfolio(portfolioid);
+      });
+
+      function listevent(eventid, portfolioid) {}
+
+      function listportfolio(portfolioid) {
+        var pagename = getpagename();
+        var headersdata = {
+          Accept: "application/json",
+          platform: 4,
+          userpagename: pagename,
+          useraction: "",
+          masterlisting: false,
+          responsetype: "HTML",
+        };
+        formdata = new FormData();
+        formdata.append("action", "listportfolio");
+        // formdata.append("portfolioid", portfolioid);
+        ajaxrequest(
+          "POST",
+          "https://www.vhhospitality.net/api/v1.0/" + "event",
+          formdata,
+          headersdata,
+          Onsuccesslistportfolio,
+          OnErrorlistportfolio
+        );
+
+        function Onsuccesslistportfolio(content) {
+          var JsonData = JSON.stringify(content);
+          var resultdata = jQuery.parseJSON(JsonData);
+
+          var htmldata = "";
+          if (resultdata.status == 0) {
+            var htmldata = '<option value="">Select One</option>';
+            $("#portfolioid").html(htmldata);
+          } else if (resultdata.status == 1) {
+            var htmldata = '<option value="">Select One</option>';
+            htmldata += resultdata.data;
+            $("#portfolioid").html(htmldata);
+            // $('#portfolioid').selec2();
+            listevent("", $("#portfolioid :selected").val());
+          }
+        }
+
+        function OnErrorlistportfolio(content) {
+          //$('#pre-loader').fadeOut();
+          //ajaxrequest("POST",'https://www.vhhospitality.net//views/404','','',OnsuccessRender,OnErrorRender);
+        }
+      }
+      $("#portfolioid").on("change", function () {
+        var portfolioid = $("#portfolioid :selected").val();
+        listevent("", portfolioid);
+      });
+      if ($("#enquiryForm").length) {
+        $("#enquiryForm").validate({
+          rules: {
+            fullname: {
+              required: true,
+            },
+            email: {
+              required: true,
+              email: true,
+            },
+            /* eventid: {
+                    required: true
+                }, */
+            noofpeople: {
+              required: true,
+            },
+            eventdate: {
+              required: true,
+            },
+            portfolioid: {
+              required: true,
+            },
+          },
+          messages: {
+            fullname: {
+              required: "Full Name is required",
+            },
+            email: {
+              required: "Email Address is required",
+            },
+            /* eventid: {
+                    required: "Type of Event is required",
+                }, */
+            noofpeople: {
+              required: "People is required",
+            },
+            eventdate: {
+              required: "Date of Event is required",
+            },
+            portfolioid: {
+              required: "Property Name is required",
+            },
+          },
+          submitHandler: function (form) {
+            $("#loader").show();
+            var eventname = "";
+            if ($("#eventid :selected").val() != "") {
+              // var eventname = $('#eventid :selected').data('eventname');
+              var eventname = $("#eventid :selected").text();
+            }
+            var portfolioname = $("#portfolioid :selected").text();
+            var pagename = getpagename();
+            var useraction = "addright";
+            formdata = new FormData(form);
+            formdata.append("action", "inserteventdata");
+            formdata.append("eventname", eventname);
+            formdata.append("portfolioname", portfolioname);
+
+            var headersdata = {
+              Accept: "application/json",
+              platform: 4,
+              userpagename: pagename,
+              useraction: useraction,
+              masterlisting: false,
+            };
+            ajaxrequest(
+              "POST",
+              "https://www.vhhospitality.net/api/v1.0/" + "event",
+              formdata,
+              headersdata,
+              OnsuccesseventDataSubmit,
+              OnErrorevent
+            );
+
+            function OnsuccesseventDataSubmit(data) {
+              var JsonData = JSON.stringify(data);
+              var resultdata = jQuery.parseJSON(JsonData);
+              $("#loader").hide();
+
+              if (resultdata.status == 0) {
+                //alertify(resultdata.message, 0);
+                Notiflix.Notify.Failure(resultdata.message);
+              } else if (resultdata.status == 1) {
+                $("#enquiryForm").validate().resetForm();
+                $("#enquiryForm").trigger("reset");
+                Notiflix.Notify.Success(resultdata.message);
+                $(".map-details-modal").addClass("hidden");
+              }
+            }
+
+            function OnErrorevent(content) {
+              // ajaxrequest("POST", "'https://www.vhhospitality.net//views/404'", '', '', OnsuccessRender, OnErrorRender);
+            }
+          },
+        });
+      }
+
+      if ($("#subscribeForm").length) {
+        $("#subscribeForm").validate({
+          rules: {
+            subscribeemail: {
+              required: true,
+              email: true,
+            },
+          },
+          messages: {
+            subscribeemail: {
+              required: "Email is required",
+            },
+          },
+          submitHandler: function (form) {
+            $("#loader").show();
+
+            var pagename = getpagename();
+            var useraction = "addright";
+            formdata = new FormData(form);
+            formdata.append("action", "insertsubscribeemaildata");
+            var headersdata = {
+              Accept: "application/json",
+              platform: 4,
+              userpagename: pagename,
+              useraction: useraction,
+              masterlisting: false,
+            };
+            ajaxrequest(
+              "POST",
+              "https://www.vhhospitality.net/api/v1.0/" + "contactus",
+              formdata,
+              headersdata,
+              OnsuccesssubscribeDataSubmit,
+              OnErrorsubscribe
+            );
+
+            function OnsuccesssubscribeDataSubmit(data) {
+              var JsonData = JSON.stringify(data);
+              var resultdata = jQuery.parseJSON(JsonData);
+              $("#loader").hide();
+
+              if (resultdata.status == 0) {
+                alertify(resultdata.message, 0);
+              } else if (resultdata.status == 1) {
+                $("#subscribeForm").validate().resetForm();
+                $("#subscribeForm").trigger("reset");
+                Notiflix.Notify.Success(resultdata.message);
+              }
+            }
+
+            function OnErrorsubscribe(content) {
+              // ajaxrequest("POST", "'https://www.vhhospitality.net//views/404'", '', '', OnsuccessRender, OnErrorRender);
+            }
+          },
+        });
+      }
+    </script>
+    <script type="text/javascript" src="assets/js/slick.min.js"></script>
+    <script type="text/javascript" src="assets/js/lazysizes.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".ind-hero-slider").slick({
+          dots: false,
+          arrows: false,
+          infinite: true,
+          speed: 300,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 3000,
+          cssEase: "ease-in-out",
+          touchThreshold: 100,
+          fade: true,
+          draggable: true,
+        });
+        $(".brand-slider").slick({
+          dots: false,
+          arrows: false,
+          infinite: true,
+          autoplay: true,
+          autoplaySpeed: 0,
+          speed: 5000,
+          prevArrow:
+            '<button type="button" class="slick-arrow slick-prev"><img decoding="async" class="lazyloaded" src="https://www.vhhospitality.net/assets/images/slide-prev.png" alt="arrow-prev" alt="arrow-prev"></button>',
+          nextArrow:
+            '<button type="button" class="slick-arrow slick-next"><img decoding="async" class="lazyloaded" src="https://www.vhhospitality.net/assets/images/slide-next.png" alt="arrow-next" alt="arrow-next"></button>',
+          slidesToShow: 7,
+          slidesToScroll: 1,
+          cssEase: "linear",
+          pauseOnHover: true,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 6,
+                slidesToScroll: 1,
+              },
+            },
+            {
+              breakpoint: 992,
+              settings: {
+                slidesToShow: 5,
+                speed: 4000,
+                slidesToScroll: 1,
+              },
+            },
+            {
+              breakpoint: 600,
+              settings: {
+                slidesToShow: 4,
+                slidesToScroll: 1,
+              },
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+              },
+            },
+          ],
+        });
+        $(".portfolio-slider").slick({
+          dots: false,
+          arrows: true,
+          infinite: true,
+          autoplay: true,
+          prevArrow:
+            '<button type="button" class="slick-arrow slick-prev"><img decoding="async" class="lazyloaded" src="https://www.vhhospitality.net/assets/images/slide-prev.png" alt="arrow-prev" alt="arrow-prev"></button>',
+          nextArrow:
+            '<button type="button" class="slick-arrow slick-next"><img decoding="async" class="lazyloaded" src="https://www.vhhospitality.net/assets/images/slide-next.png" alt="arrow-next" alt="arrow-next"></button>',
+          speed: 300,
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                infinite: true,
+                slidesToShow: 3,
+              },
+            },
+            {
+              breakpoint: 780,
+              settings: {
+                infinite: true,
+                slidesToShow: 2,
+              },
+            },
+            {
+              breakpoint: 500,
+              settings: {
+                infinite: true,
+                centerMode: true,
+                slidesToShow: 1,
+              },
+            },
+            {
+              breakpoint: 399,
+              settings: {
+                centerMode: false,
+                infinite: true,
+                slidesToShow: 1,
+              },
+            },
+          ],
+        });
+      });
+    </script>
+  </head>
+
+  <body class="defult-home home-page lazyLoadHide">
+    <div id="does-not-exist"></div>
+    <div class="main-content">
+      <!-- Header Start -->
+      <header class="header" id="header">
+        <div class="container">
+          <div class="header-content">
+            <nav class="navbar">
+              <div class="nav-brand">
+                <a href="home.html" class="nav-logo d-flex"
+                  ><img src="assets/images/logo/logo.svg" alt="logo" alt="logo"
+                /></a>
+              </div>
+              <div class="navbar-collapse">
+                <div class="nav-brand nav-brand-mobile">
+                  <a href="home.html" class="nav-logo">
+                    <img
+                      src="assets/uploads/2023/12/logo/logo-1702528517_1703737453.png"
+                      alt="Shiv Hospitality"
+                  /></a>
+                </div>
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link head-link lihome active"
+                      aria-current="page"
+                      href="home.html"
+                      >Home</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link head-link liabout"
+                      aria-current="page"
+                      href="javascript:void:(0)"
+                      >About Us<span class="menu-arrow"
+                        ><img
+                          src="assets/images/header/arrow.jpg"
+                          alt="arrow"
+                          alt="arrow" /></span
+                    ></a>
+                    <div class="dropdown-box-top">
+                      <ul class="dropdown-box">
+                        <li class="">
+                          <a
+                            class="nav-link li-business-overview"
+                            aria-current="page"
+                            href="business-overview.html"
+                            >Business Overview</a
+                          >
+                        </li>
+                        <!-- <li class=""><a class="nav-link li-culture" aria-current="page" href="https://www.vhhospitality.net/culture">Culture</a></li> -->
+                        <li class="">
+                          <a
+                            class="nav-link li-our-team"
+                            aria-current="page"
+                            href="our-team.html"
+                            >Our Team</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link head-link liportfolio"
+                      aria-current="page"
+                      href="javascript:void:(0)"
+                      >Portfolio<span class="menu-arrow"
+                        ><img
+                          src="assets/images/header/arrow.jpg"
+                          alt="arrow"
+                          alt="arrow" /></span
+                    ></a>
+                    <div class="dropdown-box-top">
+                      <ul class="dropdown-box">
+                        <li>
+                          <a
+                            class="nav-link li-our-portfolio"
+                            aria-current="page"
+                            href="our-portfolio.html"
+                            >Our Portfolio</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            class="nav-link li-our-growth"
+                            aria-current="page"
+                            href="our-growth.html"
+                            >Our Growth</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link head-link li-event"
+                      aria-current="page"
+                      href="event.html"
+                      >Events</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link head-link li-career"
+                      aria-current="page"
+                      href="career.html"
+                      >Career</a
+                    >
+                  </li>
+                  <!-- <li class="nav-item"><a class="nav-link head-link li-contact" aria-current="page" href="< ?php echo $config->getWeburl(); ?>contact-us">Contact us</a></li> -->
+                </ul>
+              </div>
+            </nav>
+            <div class="mobile-menu-body">
+              <div class="mobile-menu">
+                <ul class="mega-menu-mobile">
+                  <li class="mega-item navbar-mega">
+                    <button
+                      class="navbar-toggler li-list"
+                      type="button"
+                      role="button"
+                      aria-label="Nav Button"
+                    >
+                      <span></span> <span></span> <span></span></button
+                    ><span class="mega-link">Menu</span>
+                  </li>
+                  <li class="mega-item">
+                    <a
+                      class="lihome d-flex"
+                      aria-current="page"
+                      href="home.html"
+                      ><span class="mega-menu-icon"
+                        ><img
+                          src="assets/images/header-menu/home-icon.png"
+                          alt="Home"
+                          title="Home" /></span
+                      ><span class="mega-link">Home</span></a
+                    >
+                  </li>
+                  <li class="mega-item lisubabout">
+                    <a
+                      class="liabout d-flex"
+                      aria-current="page"
+                      href="business-overview.html"
+                      class="liabout d-flex"
+                      ><span class="mega-menu-icon"
+                        ><img
+                          src="assets/images/header-menu/about-icon.png"
+                          alt="about"
+                          title="about" /></span
+                      ><span class="mega-link">About Us</span></a
+                    >
+                  </li>
+                  <li class="mega-item">
+                    <a
+                      class="li-our-portfolio d-flex"
+                      aria-current="page"
+                      href="our-portfolio.html"
+                      ><span class="mega-menu-icon"
+                        ><img
+                          src="assets/images/header-menu/portfolio-icon.png"
+                          alt="Portfolio"
+                          title="Portfolio" /></span
+                      ><span class="mega-link">Portfolio</span></a
+                    >
+                  </li>
+                  <li class="mega-item" style="display: none">
+                    <a
+                      class="li-contact d-flex"
+                      aria-current="page"
+                      href="contact-us.html"
+                      ><span class="mega-menu-icon"
+                        ><img
+                          src="assets/images/header-menu/call-icon.png"
+                          alt="Contact"
+                          title="Contact" /></span
+                      ><span class="mega-link">Contact</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Header End -->
+      <div class="main-page" id="web-content">
+        <section class="hero-section">
+          <div class="content ind-hero-slider">
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/db6c0f2b-5cc8-41f5-81db-8d3abd029e02_1713890510.png"
+                  alt="Sheraton lisle lobby"
+                  alt="Sheraton lisle lobby"
+                />
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/microsoftteams-image--7-_1713889086.png"
+                  alt="Hilton Rosemont bar"
+                  alt="Hilton Rosemont bar"
+                />
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/mspos-lobby-lounge-5680-hor-pano_1713889694.jpg"
+                  alt="Sheraton Bloomington lela wine room"
+                  alt="Sheraton Bloomington lela wine room"
+                />
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/slider-01-1712896814_1713154661.webp"
+                  alt="Four Points Morgan photographs"
+                  alt="Four Points Morgan photographs"
+                />
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/lobby--2-_1713890820.jpg"
+                  alt="DTOB lobby"
+                  alt="DTOB lobby"
+                />
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/bar--4-_1713889982.jpg"
+                  alt="DTOB bar"
+                  alt="DTOB bar"
+                />
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/microsoftteams-image--4-1712895830_1713154955.webp"
+                  alt="Hyatt lobby"
+                  alt="Hyatt lobby"
+                />
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/uploads/2024/04/slider/microsoftteams-image-1712896284_1713155133.webp"
+                  alt="MOB lobby"
+                  alt="MOB lobby"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="ind-about our-brand-ind relative">
+          <div class="theme-container">
+            <div class="content">
+              <div class="brand-slider">
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/double-tree-bloomington-minneapolis-south-1704710631_1713156483.webp"
+                      alt="Double Tree Bloomington Minneapolis South"
+                      alt="Double Tree Bloomington Minneapolis South"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/hilton-rosemont-1704710646_1713156494.webp"
+                      alt="Hilton Rosemont"
+                      alt="Hilton Rosemont"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/hyatt-lisle-1704710659_1713156506.webp"
+                      alt="Hyatt Lisle"
+                      alt="Hyatt Lisle"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/lisle-llc-sheraton-lisle-1704710673_1713156521.webp"
+                      alt="Lisle LLC Sheraton Lisle"
+                      alt="Lisle LLC Sheraton Lisle"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/marriott-oak-brook-1704710689_1713156537.webp"
+                      alt="Marriott Oak Brook"
+                      alt="Marriott Oak Brook"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/wyndham-1704710710_1713156548.webp"
+                      alt="Wyndham"
+                      alt="Wyndham"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/four-points-by-sheraton-1709047941_1713156557.webp"
+                      alt="Four Points logo"
+                      alt="Four Points logo"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/ourbrandmaster/hilton-logo-1709048147_1713156580.webp"
+                      alt="Hilton Rosemont bar"
+                      alt="Hilton Rosemont bar"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="dots-design">
+                                <img src="< ?php echo $config->getImageurl() ?>images/dots.jpg" alt="Dots Design" alt="Dots Design">
+                            </div> -->
+            </div>
+          </div>
+        </section>
+        <section class="ind-our-team ind-img-team">
+          <div class="container">
+            <div class="content">
+              <div class="h1-before h1-after"></div>
+              <div class="our-team-body d-flex">
+                <div class="our-team-dec">
+                  <h3 class="h1-style">About Us</h3>
+                  <p dir="ltr">
+                    Our organizational culture is designed to empower creative
+                    and skilled teams, enabling them to thrive in competitive
+                    markets. Fueled by passion, we seamlessly blend industry
+                    knowledge with practical management. With a focus on seizing
+                    opportunities, we actively contribute to the growth of both
+                    our teams and various properties.
+                  </p>
+                  <p dir="ltr">
+                    Collaborating with prominent names like Hilton, Marriott,
+                    Hyatt, and Wyndham, we efficiently manage properties across
+                    diverse locations. Our adaptable plans for sales, marketing,
+                    and revenue pivot with market changes, ensuring swift
+                    adaptation. Committed to continuous growth, we actively seek
+                    new opportunities, maintaining a legacy of excellence.
+                  </p>
+                  <p dir="ltr">
+                    Going beyond management, we cultivate strong partnerships
+                    with major players in the industry, showcasing our
+                    dedication to success in the ever-evolving world of
+                    hospitality.
+                  </p>
+                  <div class="our-team-btn">
+                    <a href="business-overview.html" class="btn portfolio-btn"
+                      >View More
+                      <span class="d-flex"
+                        ><img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/images/index/arrow-left.png"
+                          alt="arrow"
+                          alt="arrow" /></span
+                    ></a>
+                  </div>
+                </div>
+                <div class="our-team-img about-ind-img relative">
+                  <span class="ind-team-01">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/02/contentsetting/about-1_1707732755.webp"
+                      alt="About Us"
+                      alt="About Us"
+                    />
+                  </span>
+                  <span class="ind-team-02">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/images/index/about_2.webp"
+                      alt="About Us"
+                      alt="About Us"
+                    />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="counter-about ind-our-team">
+          <div class="container">
+            <div class="content">
+              <div class="text-center ind-about-title"></div>
+              <div class="counter-body d-flex">
+                <div class="counter-item">
+                  <div class="counter-header text-center">
+                    <div class="count-plus">
+                      <span class="counting counte-number" data-count="10"
+                        >0</span
+                      >+
+                    </div>
+                    <p class="counter-title">Number of Properties</p>
+                  </div>
+                </div>
+                <div class="counter-item">
+                  <div class="counter-header text-center">
+                    <div class="count-plus">
+                      <span class="counting counte-number" data-count="3000"
+                        >0</span
+                      >+
+                    </div>
+                    <p class="counter-title">Hotel Rooms</p>
+                  </div>
+                </div>
+                <div class="counter-item">
+                  <div class="counter-header text-center">
+                    <div class="count-plus">
+                      <span class="counting counte-number" data-count="180000"
+                        >0</span
+                      >+
+                    </div>
+                    <p class="counter-title">Banquet Space (sq.ft.)</p>
+                  </div>
+                </div>
+                <div class="counter-item">
+                  <div class="counter-header text-center">
+                    <div class="count-plus">
+                      <span class="counting counte-number" data-count="685"
+                        >0</span
+                      >+
+                    </div>
+                    <p class="counter-title">Valued Employees</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="ind-about">
+          <div class="theme-container">
+            <div class="content">
+              <div class="text-center">
+                <h3 class="h1-style">Our Portfolio</h3>
+              </div>
+              <div class="portfolio-slider d-flex">
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/02/ourportfolio/dbf19ac1-b15f-440d-9962-8f7e31bca47f_1707247074.jpg"
+                          alt="DoubleTree Bloomington"
+                          title="DoubleTree Bloomington"
+                        />
+                        <div class="flip-card-details">
+                          <h3>DoubleTree Bloomington</h3>
+                          <span>Minneapolis,MN</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/doubletree-bloomington.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>DoubleTree Bloomington</h3>
+                          <span>Minneapolis,MN</span>
+                          <p>
+                            From Minneapolis-St. Paul International Airport,
+                            it&#39;s just a quick shuttle ride away. With
+                            personalized services, comfy rooms, and amenities
+                            fit for all guests, DoubleTree strives to make each
+                            stay unique, enjoyable, and memorable.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/doubletree-bloomington.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/02/ourportfolio/3174c3c6-a5ed-4e1e-88c3-30dd85954bff_1707248556.jpg"
+                          alt="Sheraton Bloomington"
+                          title="Sheraton Bloomington"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Sheraton Bloomington</h3>
+                          <span>Minneapolis,MN</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/sheraton-bloomington.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Sheraton Bloomington</h3>
+                          <span>Minneapolis,MN</span>
+                          <p dir="ltr">
+                            This hotel is all about luxury, with a fantastic
+                            location, perfect amenities, and a promise to make a
+                            friendly community. Short travel times to
+                            surrounding event centers make it easy for the guest
+                            to get where they need to go, but they do not
+                            compare to the cozy rooms urging you to relax.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/sheraton-bloomington.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/01/ourportfolio/mdwfp-exterior-5996-hor-clsc_1704710499.webp"
+                          alt="Four Points Chicago Westchester"
+                          title="Four Points Chicago Westchester"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Four Points Chicago Westchester</h3>
+                          <span>Westchester,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/four-points-chicago-westchester.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Four Points Chicago Westchester</h3>
+                          <span>Westchester,IL</span>
+                          <p dir="ltr">
+                            Immerse yourself in the genuine flavor of Chicago at
+                            this hotel. It combines local culture with modern
+                            luxury, giving you the best of both worlds. Because
+                            it&#39;s part of Marriott Bonvoy, it&#39;s not just
+                            a hotel – it opens the door to lots of different
+                            experiences.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/four-points-chicago-westchester.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/02/ourportfolio/doubletree-by-hilton-chicago-oak-brook-hero_1707247965.jpg"
+                          alt="DoubleTree Chicago Oak Brook"
+                          title="DoubleTree Chicago Oak Brook"
+                        />
+                        <div class="flip-card-details">
+                          <h3>DoubleTree Chicago Oak Brook</h3>
+                          <span>Oak Brook,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/doubletree-chicago-oak-brook.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>DoubleTree Chicago Oak Brook</h3>
+                          <span>Oak Brook,IL</span>
+                          <p dir="ltr">
+                            Discover unparalleled hospitality: this hotel
+                            embodies Hilton&#39;s brand commitment and creates a
+                            wonderful vacation environment. The property is
+                            located across from the Oakbrook Center Mall,
+                            seamlessly blending comfort and convenience.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/doubletree-chicago-oak-brook.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/04/ourportfolio/exterior-1_1712897488.jpg"
+                          alt="Chicago Marriott Oak Brook"
+                          title="Chicago Marriott Oak Brook"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Chicago Marriott Oak Brook</h3>
+                          <span>Oak Brook,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/chicago-marriott-oak-brook.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Chicago Marriott Oak Brook</h3>
+                          <span>Oak Brook,IL</span>
+                          <p dir="ltr">
+                            Tranquility and convenience are the hallmarks of
+                            this property. They have cozy rooms, an abundance of
+                            restaurants nearby, and both familial and business
+                            accommodations. This Marriott is all about providing
+                            exceptional services and personalized experiences.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/chicago-marriott-oak-brook.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/02/ourportfolio/exterior_1707085048.jpg"
+                          alt="Hyatt Regency Lisle"
+                          title="Hyatt Regency Lisle"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Hyatt Regency Lisle</h3>
+                          <span>Lisle,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/hyatt-regency-lisle.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Hyatt Regency Lisle</h3>
+                          <span>Lisle,IL</span>
+                          <p dir="ltr">
+                            Experience modern luxury at its best in Lisle. This
+                            hotel has 317 large rooms, each with a sofa bed.
+                            Enjoyable activates are provided for every guest,
+                            and the prime location ensures access to distinctive
+                            experiences around the city!
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/hyatt-regency-lisle.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/04/ourportfolio/exterior_1712897679.jpg"
+                          alt="Sheraton Lisle"
+                          title="Sheraton Lisle"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Sheraton Lisle</h3>
+                          <span>Lisle,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/sheraton-lisle.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Sheraton Lisle</h3>
+                          <span>Lisle,IL</span>
+                          <p dir="ltr">
+                            The hotel aims to make life easy for travelers,
+                            representing Sheraton&#39;s worldwide goal for a
+                            future that&#39;s good for the planet and for
+                            everyone. Excellent food, entertaining activates,
+                            and environmentally conscious operations allow for a
+                            blissful vacation for everyone, even pets!
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/sheraton-lisle.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/04/ourportfolio/r_1712897383.jpg"
+                          alt="Chicago Marriott Suites O'Hare"
+                          title="Chicago Marriott Suites O'Hare"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Chicago Marriott Suites O'Hare</h3>
+                          <span>Rosemont,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/chicago-marriott-suites-o-hare.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Chicago Marriott Suites O'Hare</h3>
+                          <span>Rosemont,IL</span>
+                          <p dir="ltr">
+                            Newly renovated rooms, proximity to O&#39;Hare
+                            airport, and many other lovely extra accommodations
+                            are what make this Marriott memorable. Located in a
+                            prime area with experiences for all ages, Chicago
+                            Marriott Suites encourages guests of all kinds to
+                            sit back, relax, and cherish their vacation time.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/chicago-marriott-suites-o-hare.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/04/ourportfolio/hilton-rosemont-hotel-exterior-night-fall_1712897137.jpg"
+                          alt="Hilton Rosemont O'Hare"
+                          title="Hilton Rosemont O'Hare"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Hilton Rosemont O'Hare</h3>
+                          <span>Rosemont,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/hilton-rosemont-o-hare.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Hilton Rosemont O'Hare</h3>
+                          <span>Rosemont,IL</span>
+                          <p>
+                            Close to the conference center, O&#39;Hare Airport,
+                            and other interesting sites Rosemont has to offer.
+                            Excellent location for a business trip or just
+                            leisurely stopping by. This hotel is all about
+                            making your stay here fun and easy.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/hilton-rosemont-o-hare.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/08/ourportfolio/exterior_1723575649.jpg"
+                          alt="Westin North Shore Chicago"
+                          title="Westin North Shore Chicago"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Westin North Shore Chicago</h3>
+                          <span>Wheeling,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/westin-north-shore-chicago.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Westin North Shore Chicago</h3>
+                          <span>Wheeling,IL</span>
+                          <p>
+                            Luxury hotel and resort which offers amazing
+                            restaurants, comfortable accommodations, and workout
+                            experiences that not only elevates your vacation
+                            experience, but makes you feel at home.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/westin-north-shore-chicago.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="flip-card">
+                    <div class="flip-card-inner">
+                      <div class="flip-card-front">
+                        <img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/uploads/2024/02/ourportfolio/dd7513bc-31ff-45cb-959a-7033f99e0469_1707246859.jpg"
+                          alt="Wyndham Garden Schaumburg Chicago Northwest"
+                          title="Wyndham Garden Schaumburg Chicago Northwest"
+                        />
+                        <div class="flip-card-details">
+                          <h3>Wyndham Garden Schaumburg Chicago Northwest</h3>
+                          <span>Schaumburg,IL</span>
+                          <div class="our-team-btn flip-mobile-btn">
+                            <a
+                              href="portfolio/wyndham-garden-schaumburg-chicago-northwest.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="flip-card-back">
+                        <div class="flip-card-details">
+                          <h3>Wyndham Garden Schaumburg Chicago Northwest</h3>
+                          <span>Schaumburg,IL</span>
+                          <p dir="ltr">
+                            200+ modern rooms with casual amenities making this
+                            hotel stay quiet and comfortable. Located in a
+                            central hub full of notable sites, Wyndham puts you
+                            in the center to explore Schaumburg and the outside
+                            of the city.
+                          </p>
+                          <div class="our-team-btn">
+                            <a
+                              href="portfolio/wyndham-garden-schaumburg-chicago-northwest.html"
+                              class="btn portfolio-btn"
+                              >See Details<span
+                                ><img
+                                  decoding="async"
+                                  class="lazyloaded"
+                                  src="assets/images/index/arrow-left.png"
+                                  alt="arrow"
+                                  alt="arrow" /></span
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="portfolio-btn-div text-center">
+            <a href="our-portfolio.html" class="btn portfolio-btn"
+              >View More
+              <span class="d-flex"
+                ><img
+                  decoding="async"
+                  class="lazyloaded"
+                  src="assets/images/index/arrow-left.png"
+                  alt="arrow"
+                  alt="arrow" /></span
+            ></a>
+          </div>
+        </section>
+        <section class="ind-about ind-our-team">
+          <div class="container">
+            <div class="content">
+              <div class="h1-before h1-after"></div>
+              <div class="our-team-body our-team-ind">
+                <div class="our-team-img">
+                  <span class="ind-team-01">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/uploads/2024/04/contentsetting/whatsapp-image-2024-04-11-at-10-50-55-pm_1712942074.jpg"
+                      alt="Our Team"
+                      alt="Our Team"
+                    />
+                  </span>
+                </div>
+                <div class="our-team-dec d-flex">
+                  <h3 class="h1-style">Our Team</h3>
+                  <p dir="ltr">
+                    Our leadership is a harmonious blend of hard work, passion,
+                    and a deep-rooted love for hospitality, reflecting the
+                    collective experience gained over the years in the industry.
+                    From our dedicated room attendants to our esteemed corporate
+                    team, everyone plays a valued role in our shared success. In
+                    our collaborative workplace, each person&#39;s unique
+                    contributions are celebrated. 
+                  </p>
+                  <div class="our-team-btn">
+                    <a href="our-team.html" class="btn portfolio-btn"
+                      >View More
+                      <span class="d-flex"
+                        ><img
+                          decoding="async"
+                          class="lazyloaded"
+                          src="assets/images/index/arrow-left.png"
+                          alt="arrow"
+                          alt="arrow" /></span
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="ind-about">
+          <div class="theme-container">
+            <div class="content"><div class="h1-before"></div></div>
+          </div>
+        </section>
+      </div>
+      <!-- Footer Start -->
+      <footer class="footer">
+        <div class="container">
+          <div class="containt">
+            <div class="footer-bgcolor"></div>
+
+            <div class="footer-top d-none">
+              <h3 class="h1-style footer-top-title m-0">Lets Connect</h3>
+              <form
+                class="form"
+                id="subscribeForm"
+                method="post"
+                action="#"
+                autocomplete="off"
+              >
+                <div class="footer-subscribe">
+                  <span class=""
+                    ><input
+                      type="text"
+                      id="subscribeemail"
+                      name="subscribeemail"
+                      class=""
+                      placeholder="Enter Your Mail"
+                    /><button class="subscribe-btn">Submit</button></span
+                  >
+                </div>
+              </form>
+            </div>
+            <!-- <hr> -->
+            <div class="footer-bottom">
+              <div class="footer-body">
+                <div class="footer-logo d-flex">
+                  <span class="d-block">
+                    <a href="home.html" class="nav-logo inline-block"
+                      ><img
+                        decoding="async"
+                        class="lazyloaded"
+                        src="assets/images/logo/logo.svg"
+                        alt="logo"
+                        alt="logo"
+                    /></a>
+                    <!-- <a href="< ?php echo $config->getWeburl(); ?>home" class="nav-logo inline-block"><img decoding="async" class="lazyloaded" src="< ?php echo $config->getImageurl() . $CompanyInfo->getFooterLogoimg() ?>" alt="logo" alt="logo"></a> -->
+                  </span>
+                  <!-- <p>< ?php echo $footertagline['description']; ?></p> -->
+                </div>
+                <div class="footer-menu">
+                  <h3>Quick Links</h3>
+                  <div class="footer-menu-group">
+                    <ul class="">
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="home.html"
+                          >Home</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          aria-current="page"
+                          href="business-overview.html"
+                          >About Us</a
+                        >
+                      </li>
+                    </ul>
+                    <ul class="">
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          aria-current="page"
+                          href="event.html"
+                          >Event</a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          aria-current="page"
+                          href="career.html"
+                          >Career</a
+                        >
+                      </li>
+                    </ul>
+                    <ul class="">
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          aria-current="page"
+                          href="our-portfolio.html"
+                          >Portfolio</a
+                        >
+                      </li>
+                      <!-- <li class="nav-item"><a class="nav-link" aria-current="page" href="< ?php echo $config->getWeburl(); ?>contact-us">Contact</a></li> -->
+                    </ul>
+                  </div>
+                </div>
+                <div class="footer-contact">
+                  <h3>Contact Details</h3>
+                  <ul>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        href="https://maps.app.goo.gl/41bySZXEbsQ91WUa7"
+                        target="_blank"
+                        ><span
+                          ><img
+                            decoding="async"
+                            class="lazyloaded"
+                            src="assets/images/footer/location.png"
+                            alt="location"
+                            alt="location" /></span
+                        >1100 Woodfield Road Schaumburg, IL. 60173</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="mailto:info@vhllc.net"
+                        ><span
+                          ><img
+                            decoding="async"
+                            class="lazyloaded"
+                            src="assets/images/footer/email.png"
+                            alt="email"
+                            alt="email" /></span
+                        >info@vhllc.net</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+                <div class="footer-social">
+                  <h3>Follow Us On</h3>
+                  <ul>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        href="https://www.facebook.com/people/Shiv-Hospitality/61558703784382/"
+                        target="_blank"
+                        ><span
+                          ><img
+                            decoding="async"
+                            class="lazyloaded"
+                            src="assets/images/footer/facebook-icon.svg"
+                            alt="facebook"
+                            alt="facebook" /></span
+                      ></a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        href="https://www.linkedin.com/company/Shiv-hospitality/"
+                        target="_blank"
+                        ><span
+                          ><img
+                            decoding="async"
+                            class="lazyloaded"
+                            src="assets/images/footer/in-icon.svg"
+                            alt="linkedin"
+                            alt="linkedin" /></span
+                      ></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-copy">
+          <hr />
+          <div class="container">
+            <div class="footer-weigher">
+              <div class="footer-weigher-link">
+                <span
+                  >Copyright © 2025 <a href="index.html">VH Hospitality</a> |
+                  Design & Developed by
+                  <a href="https://www.instanceit.com/"
+                    >Instance IT Solutions®</a
+                  ></span
+                >
+              </div>
+              <div class="footer-weigher-link">
+                <ul>
+                  <li>
+                    <a
+                      href="privacy-policy.html"
+                      class="nav-link"
+                      href="index.html"
+                      >Privacy Policy</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="cookie-colicy.html"
+                      class="nav-link"
+                      href="index.html"
+                      >Cookie Policy</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="terms-conditions.html"
+                      class="nav-link"
+                      href="index.html"
+                      >Terms & Conditions</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer End -->
+    </div>
+    <script>
+      $(document).ready(function () {
+        $("ul li a").removeClass("active");
+        $("ul li .lihome").addClass("active");
+        // counter js
+        $(".counting").each(function () {
+          var $this = $(this),
+            countTo = $this.attr("data-count");
+          $({
+            countNum: $this.text(),
+          }).animate(
+            {
+              countNum: countTo,
+            },
+            {
+              duration: 3000,
+              easing: "linear",
+              step: function () {
+                $this.text(Math.floor(this.countNum));
+              },
+              complete: function () {
+                $this.text(this.countNum);
+                //alert('finished');
+              },
+            }
+          );
+        });
+        $(window).scroll(function () {
+          $(window).on("scroll", function () {
+            if ($(window).scrollTop() >= $(".counter-about").offset().top) {
+              $(".counte-number").addClass("counting");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

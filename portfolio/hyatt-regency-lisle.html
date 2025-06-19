@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from www.vhhospitality.net/portfolio/hyatt-regency-lisle by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 17 Jun 2025 23:12:29 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+            <!-- CSS Start -->
+        <link rel="stylesheet" type="text/css" href="../assets/css/megamenuv01.css" media="all">
+<noscript><link rel="stylesheet" type="text/css" href="../assets/css/megamenuv01.css" media="all"></noscript>
+<link rel="stylesheet" type="text/css" href="../assets/css/responsivev02.css" media="all">
+<noscript><link rel="stylesheet" type="text/css" href="../assets/css/responsivev02.css" media="all"></noscript> 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-30M5ER36TW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-30M5ER36TW');
+</script>    <link rel="stylesheet" type="text/css" href="../assets/css/portfolio-details-style.css" media="all">
+    <noscript><link rel="stylesheet" type="text/css" href="../assets/css/portfolio-details-style.css" media="all"></noscript>
+    <link rel="stylesheet" type="text/css" href="../assets/css/slick.css">
+    <noscript><link rel="stylesheet" type="text/css" href="../assets/css/slick.css"></noscript>
+    <link type="text/css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet';" href="../../cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" media="all">
+    <noscript><link type="text/css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet';" href="../../cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" media="all"></noscript>
+    <!-- CSS End -->
+    <!-- Meta Tag Start -->
+    <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="hyatt regency, hyatt regency lisle, hyatt lisle, hyatt regency lisle near naperville, hyatt place, hyatt regency chicago, hyatt hotels, hyatt long beach, hyatt house, hyatt regency hotel, hyatt regency boston, hyatt regency houston, hyatt boston"><meta name="author" content="Vinayaka Hospitality"><meta name="robots" content="INDEX, FOLLOW">
+    <meta name="description" content="Hyatt Regency Lisle | Vinayaka Hospitality"><meta property="og:title" content="Elevate your experience with luxury at Hyatt Regency Lisle near Naperville, where exceptional hospitality awaits."><meta property="og:url" content="hyatt-regency-lisle.html">
+    <meta property="og:description" content="Hyatt Regency Lisle | Vinayaka Hospitality"><link rel="canonical" href="hyatt-regency-lisle.html"><meta property="og:image" content="../assets/images/favicon.webp">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/logo/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="../assets/images/logo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/logo/favicon-16x16.png"><link rel="manifest" href="../assets/images/logo/site.html">
+    <!-- Meta Tag End -->
+    <!--title--><title>Hyatt Regency Lisle near Naperville | Luxury Awaits | Elevate Your Experience</title>
+    <script type="text/javascript" src="../../code.jquery.com/jquery-2.1.3.min.js"></script><script type="text/javascript" defer src="../assets/js/custom.js"></script><script defer src="../../cdn.jsdelivr.net/npm/notiflix%402.7.0/dist/notiflix-aio-2.7.0.min.js"></script>
+<script type="text/javascript" src="../assets/js/validate.js"></script><script type="text/javascript" defer src="../assets/js/IISMethods.js"></script>
+<script>
+    //india mobile no validation
+    jQuery.validator.addMethod("mobileno", function(value, element) {
+        return this.optional(element) || /^[0]?[6789]\d{9}$/i.test(value);
+    }, "Invalid mobile no");
+    //only for number
+    jQuery.validator.addMethod("numberonly", function(value, element) {
+        return this.optional(element) || /^[0-9]+$/i.test(value);
+    }, "Invalid Number");
+
+
+    function numbonly(e) {
+        var k = e.which;
+        var ok = k >= 48 && k <= 57 || // 0-9
+            k == 8 || //backspace
+            k == 0 || //arrow key
+            k == 13 || //enter
+            k == 46; //. sign
+        if (!ok) {
+            e.preventDefault();
+        }
+    }
+    $('body').on('click', '.close-button-modal', function() {
+        $('.map-details-modal').addClass('hidden');
+    });
+    $('body').on('click', '.btnenquiry', function() {
+        $('.map-details-modal').removeClass('hidden');
+        var eventid = $(this).data('id');
+        var portfolioid = $(this).data('portfolioid');
+        $('#enquiryForm #eventdate').val('2025-06-18');
+        // listevent(eventid, portfolioid);
+        listportfolio(portfolioid);
+    })
+
+    function listevent(eventid,portfolioid) {
+    }
+    
+    function listportfolio(portfolioid) {
+        var pagename = getpagename();
+        var headersdata = {
+            Accept: 'application/json',
+            platform: 4,
+            userpagename: pagename,
+            useraction: '',
+            masterlisting: false,
+            responsetype: 'HTML'
+        };
+        formdata = new FormData();
+        formdata.append("action", "listportfolio");
+        // formdata.append("portfolioid", portfolioid);
+        ajaxrequest("POST", 'https://www.vhhospitality.net/api/v1.0/' + 'event', formdata, headersdata,
+            Onsuccesslistportfolio, OnErrorlistportfolio);
+
+        function Onsuccesslistportfolio(content) {
+            var JsonData = JSON.stringify(content);
+            var resultdata = jQuery.parseJSON(JsonData);
+
+            var htmldata = "";
+            if (resultdata.status == 0) {
+                var htmldata ='<option value="">Select One</option>';
+                $('#portfolioid').html(htmldata);
+            } else if (resultdata.status == 1) {
+                var htmldata ='<option value="">Select One</option>';
+                htmldata+= resultdata.data;
+                $('#portfolioid').html(htmldata);
+                // $('#portfolioid').selec2();
+                listevent('',$('#portfolioid :selected').val())
+            }
+        }
+
+        function OnErrorlistportfolio(content) {
+            //$('#pre-loader').fadeOut();
+            //ajaxrequest("POST",'https://www.vhhospitality.net//views/404','','',OnsuccessRender,OnErrorRender);
+        }
+    }
+    $('#portfolioid').on('change',function(){
+        var portfolioid=$('#portfolioid :selected').val();
+        listevent('',portfolioid)
+    })
+    if ($('#enquiryForm').length) {
+        $('#enquiryForm').validate({
+            rules: {
+                fullname: {
+                    required: true,
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                /* eventid: {
+                    required: true
+                }, */
+                noofpeople: {
+                    required: true,
+                },
+                eventdate: {
+                    required: true,
+                },
+                portfolioid: {
+                    required: true,
+                },
+            },
+            messages: {
+                fullname: {
+                    required: "Full Name is required",
+                },
+                email: {
+                    required: "Email Address is required",
+                },
+                /* eventid: {
+                    required: "Type of Event is required",
+                }, */
+                noofpeople: {
+                    required: "People is required",
+                },
+                eventdate: {
+                    required: "Date of Event is required",
+                },
+                portfolioid: {
+                    required: "Property Name is required",
+                }
+            },
+            submitHandler: function(form) {
+                $('#loader').show();
+                var eventname='';
+                if($('#eventid :selected').val()!='')
+                {
+                    // var eventname = $('#eventid :selected').data('eventname');
+                    var eventname = $('#eventid :selected').text();
+                }
+                var portfolioname = $('#portfolioid :selected').text();
+                var pagename = getpagename();
+                var useraction = 'addright';
+                formdata = new FormData(form);
+                formdata.append("action", "inserteventdata");
+                formdata.append("eventname", eventname);
+                formdata.append("portfolioname", portfolioname);
+
+                var headersdata = {
+                    'Accept': 'application/json',
+                    platform: 4,
+                    userpagename: pagename,
+                    useraction: useraction,
+                    masterlisting: false
+                };
+                ajaxrequest("POST", 'https://www.vhhospitality.net/api/v1.0/' + 'event', formdata, headersdata, OnsuccesseventDataSubmit, OnErrorevent)
+
+                function OnsuccesseventDataSubmit(data) {
+                    var JsonData = JSON.stringify(data);
+                    var resultdata = jQuery.parseJSON(JsonData);
+                    $('#loader').hide();
+
+                    if (resultdata.status == 0) {
+                        //alertify(resultdata.message, 0);
+                        Notiflix.Notify.Failure(resultdata.message);
+                    } else if (resultdata.status == 1) {
+                        $("#enquiryForm").validate().resetForm();
+                        $('#enquiryForm').trigger("reset");
+                        Notiflix.Notify.Success(resultdata.message);
+                        $('.map-details-modal').addClass('hidden');
+                    }
+
+                }
+
+                function OnErrorevent(content) {
+                    // ajaxrequest("POST", "'https://www.vhhospitality.net//views/404'", '', '', OnsuccessRender, OnErrorRender);
+                }
+            },
+        });
+    }
+
+    if ($('#subscribeForm').length) {
+        $('#subscribeForm').validate({
+            rules: {
+                subscribeemail: {
+                    required: true,
+                    email: true
+                },
+            },
+            messages: {
+                subscribeemail: {
+                    required: "Email is required",
+                },
+            },
+            submitHandler: function(form) {
+                $('#loader').show();
+               
+                var pagename = getpagename();
+                var useraction = 'addright';
+                formdata = new FormData(form);
+                formdata.append("action", "insertsubscribeemaildata");
+                var headersdata = {
+                    'Accept': 'application/json',
+                    platform: 4,
+                    userpagename: pagename,
+                    useraction: useraction,
+                    masterlisting: false
+                };
+                ajaxrequest("POST", 'https://www.vhhospitality.net/api/v1.0/' + 'contactus', formdata, headersdata, OnsuccesssubscribeDataSubmit, OnErrorsubscribe)
+
+                function OnsuccesssubscribeDataSubmit(data) {
+                    var JsonData = JSON.stringify(data);
+                    var resultdata = jQuery.parseJSON(JsonData);
+                    $('#loader').hide();
+                    
+                    if (resultdata.status == 0) {
+                        alertify(resultdata.message,0);
+                    } else if (resultdata.status == 1) {
+                        $("#subscribeForm").validate().resetForm();
+                        $('#subscribeForm').trigger("reset");
+                        Notiflix.Notify.Success(resultdata.message);
+                    }
+
+                }
+
+                function OnErrorsubscribe(content) {
+                    // ajaxrequest("POST", "'https://www.vhhospitality.net//views/404'", '', '', OnsuccessRender, OnErrorRender);
+                }
+            },
+        });
+    }
+</script><script type="text/javascript" defer src="../assets/js/slick.min.js"></script>
+    <script type="text/javascript" defer src="../assets/js/lazysizes.min.js"></script><script defer src="../fontawesome/fontawesome.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="defult-home home-page lazyLoadHide">
+    <div id="does-not-exist"> </div>
+    <div class="main-content ">
+        <!-- Header Start --><header class="header" id="header">
+<div class="container">
+<div class="header-content">
+<nav class="navbar">
+<div class="nav-brand"><a href="../home.html" class="nav-logo d-flex"><img src="../assets/images/logo/logo.svg" alt="logo" alt="logo"></a></div>
+<div class="navbar-collapse">
+<div class="nav-brand nav-brand-mobile">
+<a href="../home.html" class="nav-logo">
+<img src="../assets/uploads/2023/12/logo/logo-1702528517_1703737453.png" alt="Vinayaka Hospitality" ></a>
+</div>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link head-link lihome active" aria-current="page" href="../home.html">Home</a></li>
+<li class="nav-item"><a class="nav-link head-link liabout" aria-current="page" href="javascript:void:(0)">About Us<span class="menu-arrow"><img src="../assets/images/header/arrow.jpg" alt="arrow" alt="arrow"></span></a>
+<div class="dropdown-box-top"><ul class="dropdown-box">
+<li class=""><a class="nav-link li-business-overview" aria-current="page" href="../business-overview.html">Business Overview</a></li>
+<!-- <li class=""><a class="nav-link li-culture" aria-current="page" href="https://www.vhhospitality.net/culture">Culture</a></li> -->
+<li class=""><a class="nav-link li-our-team" aria-current="page" href="../our-team.html">Our Team</a></li>
+</ul></div>
+</li>
+<li class="nav-item"><a class="nav-link head-link liportfolio" aria-current="page" href="javascript:void:(0)">Portfolio<span class="menu-arrow"><img src="../assets/images/header/arrow.jpg" alt="arrow" alt="arrow"></span></a>
+<div class="dropdown-box-top"><ul class="dropdown-box">
+<li><a class="nav-link li-our-portfolio" aria-current="page" href="../our-portfolio.html">Our Portfolio</a></li>
+<li><a class="nav-link li-our-growth" aria-current="page" href="../our-growth.html">Our Growth</a></li>
+</ul></div>
+</li>
+<li class="nav-item"><a class="nav-link head-link li-event" aria-current="page" href="../event.html">Events</a></li>
+<li class="nav-item"><a class="nav-link head-link li-career" aria-current="page" href="../career.html">Career</a></li>
+<!-- <li class="nav-item"><a class="nav-link head-link li-contact" aria-current="page" href="< ?php echo $config->getWeburl(); ?>contact-us">Contact us</a></li> -->
+</ul>
+</div>
+</nav>
+<div class="mobile-menu-body"><div class="mobile-menu"><ul class="mega-menu-mobile">
+<li class="mega-item navbar-mega"><button class="navbar-toggler li-list" type="button" role="button" aria-label="Nav Button"><span></span> <span></span> <span></span></button><span class="mega-link">Menu</span></li>
+<li class="mega-item"><a class="lihome d-flex" aria-current="page" href="../home.html"><span class="mega-menu-icon"><img src="../assets/images/header-menu/home-icon.png" alt="Home" title="Home"></span><span class="mega-link">Home</span></a></li>
+<li class="mega-item lisubabout"><a class="liabout d-flex" aria-current="page" href="../business-overview.html" class="liabout d-flex"><span class="mega-menu-icon"><img src="../assets/images/header-menu/about-icon.png" alt="about" title="about"></span><span class="mega-link">About Us</span></a></li>
+<li class="mega-item"><a class="li-our-portfolio d-flex" aria-current="page" href="../our-portfolio.html"><span class="mega-menu-icon"><img src="../assets/images/header-menu/portfolio-icon.png" alt="Portfolio" title="Portfolio"></span><span class="mega-link">Portfolio</span></a></li>
+<li class="mega-item" style="display:none"><a class="li-contact d-flex" aria-current="page" href="../contact-us.html"><span class="mega-menu-icon"><img src="../assets/images/header-menu/call-icon.png" alt="Contact" title="Contact"></span><span class="mega-link">Contact</span></a></li>
+</ul></div></div>
+</div>
+</div>
+</header><!-- Header End -->
+        <div class="main-page business-overview-page" id="web-content">
+            <section class="hero-section">
+                <div class="theme-container">
+                    <div class="content">
+                        <div class="back-click">
+                            <p><a href="../our-portfolio.html">Our Portfolio</a> <span class="d-flex"><img decoding="async" src="../assets/images/portfolio-details/arrow.png" alt="arrow" alt="arrow"></span> Hyatt Regency Lisle</p>
+                        </div>
+                        <div class="pd-hero d-flex">
+                            <div class="pd-hero-title">
+                                <h1 class="h1-style">Hyatt Regency Lisle</h1>
+                                <p dir="ltr">Step into sophistication at Hyatt Regency Lisle near Naperville, where meticulous details are crafted to impress. The skylit lobby atrium welcomes you to spacious, suite-sized guestrooms, strategically located near suburban business hubs, the Naperville Riverwalk, the Morton Arboretum, golf courses, breweries, and popular restaurants.</p><p dir="ltr">Discover a haven of elegance in all-suite guestrooms, whether for business or leisure. Enjoy a hot breakfast buffet in our lobby restaurant, a local Lisle favorite, and elevate your events with flexible meeting rooms, and exquisite wedding venues. Hyatt Regency Lisle near Naperville ensures an elevated experience for discerning travelers.</p>                                <div class="pd-rating d-flex">
+                                                                                                            </div>
+                                <div class="pd-address d-flex">
+                                    <span>Address : </span> 
+                                                                            <a href="https://maps.app.goo.gl/WeRTJu5psxqSadgw9" target="_blank"> 1400 Corporetum Dr,
+Lisle, IL, 60532</a>
+                                                                           </div>
+                                <div class="pd-phone d-flex">
+                                    <span>Phone : </span> <a href="tel:+1 630-852-1234"> +1 630-852-1234</a>
+                                </div>
+                                <div class="pd-link d-flex">
+                                    <ul class="pd-social-link d-flex">
+                                                                            <li class="nav-item">
+                                            <a class="d-flex" href="https://maps.app.goo.gl/WeRTJu5psxqSadgw9" target="_blank">
+                                                <img decoding="async" class="" src="../assets/images/footer/map.svg" alt="Map" title="Map">
+                                            </a>
+                                        </li>
+                                     
+                                     
+                                    
+                                       
+                                        
+                                        
+                                    </ul>
+                                     
+                                    <div class="pd-web-link">
+                                        <a href="https://www.hyatt.com/hyatt-regency/en-US/lisle-hyatt-regency-lisle-near-naperville" target="_blank" class="btn portfolio-btn">View Website <span class="d-flex"><img decoding="async" class="" src="../assets/images/index/arrow-left.png" alt="arrow" alt="arrow"></span></a>
+                                    </div>
+                                                                    </div>
+                            </div>
+                            <div class="pd-hero-img">
+                                <img decoding="async" class="" src="../assets/uploads/2024/02/ourportfolio/exterior_1707085048.jpg" alt="Hyatt Regency Lisle" alt="Hyatt Regency Lisle">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+              
+                <section class="pd-gallry">
+                    <div class="theme-container">
+                        <div class="content">
+
+                            <div class="product-menu text-center">
+                                <ul class="tab">
+                                                                            <li>
+                                            <button class="tablinks  d-flex active" onclick="openCity(event, 'photos')">Images</button>
+                                        </li>
+                                        
+                                </ul>
+                            </div>
+
+                            <div class="product-menu-item">
+                                        
+                                <div id="photos" class="tabcontent" style="display: block;">
+                                    <div class="pd-video d-flex pd-photos" id="listimagedetail">
+                                                                                <div class="pd-video-items">
+                                            <a data-fancybox="gallery" data-src="https://www.vhhospitality.net/assets/uploads/2024/01/ourportfolioitems/hyatt-regency-lisle-near-naperville-p072-lobby-16x9_1706272135.webp" data-caption="">
+                                                <img decoding="async" class="lazyloaded" src="../assets/uploads/2024/01/ourportfolioitems/hyatt-regency-lisle-near-naperville-p072-lobby-16x9_1706272135.webp" alt="Hyatt Regency Lisle" title="Hyatt Regency Lisle">
+                                                <!-- <span class="pd-photos-zoom"><i class="fa-solid fa-magnifying-glass"></i></span> -->
+                                            </a>
+                                        </div>
+                                                                                <div class="pd-video-items">
+                                            <a data-fancybox="gallery" data-src="https://www.vhhospitality.net/assets/uploads/2024/02/ourportfolioitems/djp-0120_1707259670.jpg" data-caption="">
+                                                <img decoding="async" class="lazyloaded" src="../assets/uploads/2024/02/ourportfolioitems/djp-0120_1707259670.jpg" alt="Hyatt Regency Lisle" title="Hyatt Regency Lisle">
+                                                <!-- <span class="pd-photos-zoom"><i class="fa-solid fa-magnifying-glass"></i></span> -->
+                                            </a>
+                                        </div>
+                                                                                <div class="pd-video-items">
+                                            <a data-fancybox="gallery" data-src="https://www.vhhospitality.net/assets/uploads/2024/01/ourportfolioitems/lisle-p069-double-guestroom-16x9_1706272141.webp" data-caption="">
+                                                <img decoding="async" class="lazyloaded" src="../assets/uploads/2024/01/ourportfolioitems/lisle-p069-double-guestroom-16x9_1706272141.webp" alt="Hyatt Regency Lisle" title="Hyatt Regency Lisle">
+                                                <!-- <span class="pd-photos-zoom"><i class="fa-solid fa-magnifying-glass"></i></span> -->
+                                            </a>
+                                        </div>
+                                                                                <div class="pd-video-items">
+                                            <a data-fancybox="gallery" data-src="https://www.vhhospitality.net/assets/uploads/2024/02/ourportfolioitems/panoramic-guest-room-suite_1707259673.png" data-caption="">
+                                                <img decoding="async" class="lazyloaded" src="../assets/uploads/2024/02/ourportfolioitems/panoramic-guest-room-suite_1707259673.png" alt="Hyatt Regency Lisle" title="Hyatt Regency Lisle">
+                                                <!-- <span class="pd-photos-zoom"><i class="fa-solid fa-magnifying-glass"></i></span> -->
+                                            </a>
+                                        </div>
+                                                                                <div class="pd-video-items">
+                                            <a data-fancybox="gallery" data-src="https://www.vhhospitality.net/assets/uploads/2024/01/ourportfolioitems/hyatt-regency-lisle-near-naperville-p084-ballroom-wedding-4x3_1706272136.webp" data-caption="">
+                                                <img decoding="async" class="lazyloaded" src="../assets/uploads/2024/01/ourportfolioitems/hyatt-regency-lisle-near-naperville-p084-ballroom-wedding-4x3_1706272136.webp" alt="Hyatt Regency Lisle" title="Hyatt Regency Lisle">
+                                                <!-- <span class="pd-photos-zoom"><i class="fa-solid fa-magnifying-glass"></i></span> -->
+                                            </a>
+                                        </div>
+                                                                                <div class="pd-video-items">
+                                            <a data-fancybox="gallery" data-src="https://www.vhhospitality.net/assets/uploads/2024/02/ourportfolioitems/arbor-ballroom-classroom-set-1_1707259670.jpg" data-caption="">
+                                                <img decoding="async" class="lazyloaded" src="../assets/uploads/2024/02/ourportfolioitems/arbor-ballroom-classroom-set-1_1707259670.jpg" alt="Hyatt Regency Lisle" title="Hyatt Regency Lisle">
+                                                <!-- <span class="pd-photos-zoom"><i class="fa-solid fa-magnifying-glass"></i></span> -->
+                                            </a>
+                                        </div>
+                                              
+                                        
+                                    </div>
+                                                                            <div class="more-event-btn text-center" id="imgloadmore">
+                                            <div class="pd-web-link btnimgloadmore">
+                                                <a href="javascript:void(0)" class="btn portfolio-btn imgloadmore" data-isimage="1" data-page="2" data-id="FD6B007C-F710-4BF0-A83D-066266DA7999">Load More</a>
+                                            </div>
+                                        </div>
+                                                                    </div>
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                    </div>
+        <!-- Footer Start --><footer class="footer">
+    <div class="container">
+        <div class="containt">
+
+            <div class="footer-bgcolor "></div>
+
+            <div class="footer-top d-none">
+                <h3 class="h1-style footer-top-title m-0">Lets Connect</h3>
+                <form class="form" id="subscribeForm" method="post" action="#" autocomplete="off">
+                    <div class="footer-subscribe"><span class=""><input type="text" id="subscribeemail" name="subscribeemail" class="" placeholder="Enter Your Mail"><button class="subscribe-btn">Submit</button></span></div>
+                </form>
+            </div>
+            <!-- <hr> -->
+            <div class="footer-bottom">
+                <div class="footer-body">
+                    <div class="footer-logo d-flex">
+                                                    <span class="d-block">
+                                <a href="../home.html" class="nav-logo inline-block"><img decoding="async" class="lazyloaded" src="../assets/images/logo/logo.svg" alt="logo" alt="logo"></a>
+                                <!-- <a href="< ?php echo $config->getWeburl(); ?>home" class="nav-logo inline-block"><img decoding="async" class="lazyloaded" src="< ?php echo $config->getImageurl() . $CompanyInfo->getFooterLogoimg() ?>" alt="logo" alt="logo"></a> -->
+                            </span>
+                                                                        <!-- <p>< ?php echo $footertagline['description']; ?></p> -->
+                    </div>
+                    <div class="footer-menu">
+                        <h3>Quick Links</h3>
+                        <div class="footer-menu-group">
+                            <ul class="">
+                                <li class="nav-item"><a class="nav-link" aria-current="page" href="../home.html">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" aria-current="page" href="../business-overview.html">About Us</a></li>
+                            </ul>
+                            <ul class="">
+                                <li class="nav-item"><a class="nav-link" aria-current="page" href="../event.html">Event</a></li>
+                                <li class="nav-item"><a class="nav-link" aria-current="page" href="../career.html">Career</a></li>
+                            </ul>
+                            <ul class="">
+                                <li class="nav-item"><a class="nav-link" aria-current="page" href="../our-portfolio.html">Portfolio</a></li>
+                                <!-- <li class="nav-item"><a class="nav-link" aria-current="page" href="< ?php echo $config->getWeburl(); ?>contact-us">Contact</a></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="footer-contact">
+                        <h3>Contact Details</h3>
+                        <ul>
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://maps.app.goo.gl/41bySZXEbsQ91WUa7" target="_blank"><span><img decoding="async" class="lazyloaded" src="../assets/images/footer/location.png" alt="location" alt="location"></span>1100 Woodfield Road Schaumburg, IL. 60173</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:info@vhllc.net"><span><img decoding="async" class="lazyloaded" src="../assets/images/footer/email.png" alt="email" alt="email"></span>info@vhllc.net</a>
+                            </li>
+                        </ul>
+                    </div>
+                                            <div class="footer-social">
+                            <h3>Follow Us On</h3>
+                            <ul>
+                                                                    <li class="nav-item">
+                                        <a class="nav-link" href="https://www.facebook.com/people/Vinayaka-Hospitality/61558703784382/" target="_blank"><span><img decoding="async" class="lazyloaded" src="../assets/images/footer/facebook-icon.svg" alt="facebook" alt="facebook"></span></a>
+                                    </li>
+                                                                    <li class="nav-item">
+                                        <a class="nav-link" href="https://www.linkedin.com/company/vinayaka-hospitality/" target="_blank"><span><img decoding="async" class="lazyloaded" src="../assets/images/footer/in-icon.svg" alt="linkedin" alt="linkedin"></span></a>
+                                    </li>
+                                                            </ul>
+                        </div>
+                                        </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copy">
+        <hr>
+        <div class="container">
+            <div class="footer-weigher">
+                <div class="footer-weigher-link">
+                    <span>Copyright © 2025 <a href="../index.html">VH Hospitality</a> | Design & Developed by <a href="https://www.instanceit.com/">Instance IT Solutions®</a></span>
+                </div>
+                <div class="footer-weigher-link">
+                    <ul>
+                        <li><a href="../privacy-policy.html" class="nav-link" href="../index.html">Privacy Policy</a></li>
+                        <li><a href="../cookie-colicy.html" class="nav-link" href="../index.html">Cookie Policy</a></li>
+                        <li><a href="../terms-conditions.html" class="nav-link" href="../index.html">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer><!-- Footer End -->
+    </div>
+    <!-- JS Start --><script src="../../cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script><!-- JS End -->
+    <script>
+        $(document).ready(function() {
+            $("ul li a").removeClass("active");
+            $("ul li .liportfolio").addClass("active");
+            $("ul li .li-our-portfolio").addClass("active");
+            $('.pd-event-slider').slick({
+                dots: false,
+                arrows: true,
+                prevArrow: '<button type="button" class="slick-arrow slick-prev"><img decoding="async" class="lazyloaded" src="https://www.vhhospitality.net/assets/images/slide-prev.png" alt="arrow-prev" alt="arrow-prev"></button>',
+                nextArrow: '<button type="button" class="slick-arrow slick-next"><img decoding="async" class="lazyloaded" src="https://www.vhhospitality.net/assets/images/slide-next.png" alt="arrow-next" alt="arrow-next"></button>',
+                infinite: true,
+                speed: 300,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                responsive: [{
+                        breakpoint: 990,
+                        settings: {
+                            slidesToShow: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            centerMode: true,
+                            centerPadding: '30px',
+                        }
+                    },
+                    {
+                        breakpoint: 660,
+                        settings: {
+                            centerMode: false,
+                        }
+                    },
+                    {
+                        breakpoint: 450,
+                        settings: {
+                            centerMode: true,
+                        }
+                    },
+                    {
+                        breakpoint: 390,
+                        settings: {
+                            centerMode: false,
+                        }
+                    },
+                ]
+            });
+        });
+        // nav & tab js 
+        function openCity(evt, cityName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        $('body').on('click', '.vdoloadmore', function() {
+            var page = $(this).attr('data-page');
+            var id = $(this).attr('data-id');
+
+            listportfoliovideo(id, page);
+        })
+
+        function listportfoliovideo(id, page) {
+            var pagename = getpagename();
+            var headersdata = {
+                Accept: 'application/json',
+                platform: 4,
+                userpagename: pagename,
+                useraction: '',
+                masterlisting: false,
+                responsetype: 'HTML'
+            };
+            formdata = new FormData();
+            formdata.append("action", "listportfoliovideo");
+            formdata.append("nextpage", page);
+            formdata.append("perpage", 6);
+
+            formdata.append("id", id);
+            ajaxrequest("POST", 'https://www.vhhospitality.net/api/v1.0/' + 'event', formdata, headersdata,
+                Onsuccesslistportfoliovideo, OnErrorlistportfoliovideo);
+
+            function Onsuccesslistportfoliovideo(content) {
+                var JsonData = JSON.stringify(content);
+                var resultdata = jQuery.parseJSON(JsonData);
+                var htmldata = "";
+                var htmlpagedata = "";
+                if (resultdata.status == 0) {
+                    var curr_page = resultdata.currpage;
+                } else if (resultdata.status == 1) {
+                    var curr_page = resultdata.currpage;
+                    $('#btnvdoloadmore').remove();
+                    var htmldata = resultdata.data;
+                    $('#listvideodetail').append(htmldata);
+                    var htmlpagedata = '';
+                    if (resultdata.loadmore == 1) {
+                        htmlpagedata += '<div class="pd-web-link btnvdoloadmore">';
+                        htmlpagedata += '    <a href="javascript:void(0)" class="btn portfolio-btn vdoloadmore" data-isimage="0" data-page="' + resultdata.nextpage1 + '" data-id="' + id + '" >Load More</a>';
+                        htmlpagedata += '</div>';
+                    }
+                    $('#vdoloadmore').html(htmlpagedata);
+                }
+            }
+            function OnErrorlistportfoliovideo(content) {
+                //$('#pre-loader').fadeOut();
+                //ajaxrequest("POST",'https://www.vhhospitality.net//views/404','','',OnsuccessRender,OnErrorRender);
+            }
+        }
+        $('body').on('click', '.imgloadmore', function() {
+            var page = $(this).attr('data-page');
+            var id = $(this).attr('data-id');
+
+            listportfolioimage(id, page);
+        })
+
+        function listportfolioimage(id, page) {
+            var pagename = getpagename();
+            var headersdata = {
+                Accept: 'application/json',
+                platform: 4,
+                userpagename: pagename,
+                useraction: '',
+                masterlisting: false,
+                responsetype: 'HTML'
+            };
+            formdata = new FormData();
+            formdata.append("action", "listportfolioimage");
+            formdata.append("nextpage", page);
+            formdata.append("perpage", 6);
+
+            formdata.append("id", id);
+            ajaxrequest("POST", 'https://www.vhhospitality.net/api/v1.0/' + 'event', formdata, headersdata,
+                Onsuccesslistportfolioimage, OnErrorlistportfolioimage);
+
+            function Onsuccesslistportfolioimage(content) {
+                var JsonData = JSON.stringify(content);
+                var resultdata = jQuery.parseJSON(JsonData);
+                var htmldata = "";
+                var htmlpagedata = "";
+                if (resultdata.status == 0) {
+                    var curr_page = resultdata.currpage;
+                } else if (resultdata.status == 1) {
+                    var curr_page = resultdata.currpage;
+                    $('#btnimgloadmore').remove();
+                    var htmldata = resultdata.data;
+                    $('#listimagedetail').append(htmldata);
+                    var htmlpagedata = '';
+                    if (resultdata.loadmore == 1) {
+                        htmlpagedata += '<div class="pd-web-link btnimgloadmore">';
+                        htmlpagedata += '    <a href="javascript:void(0)" class="btn portfolio-btn imgloadmore" data-isimage="1" data-page="' + resultdata.nextpage1 + '" data-id="' + id + '" >Load More</a>';
+                        htmlpagedata += '</div>';
+                    }
+                    $('#imgloadmore').html(htmlpagedata);
+                }
+            }
+            function OnErrorlistportfolioimage(content) {
+                //$('#pre-loader').fadeOut();
+                //ajaxrequest("POST",'https://www.vhhospitality.net//views/404','','',OnsuccessRender,OnErrorRender);
+            }
+        }
+    </script>
+</body>
+
+<!-- Mirrored from www.vhhospitality.net/portfolio/hyatt-regency-lisle by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 17 Jun 2025 23:12:30 GMT -->
+</html>
