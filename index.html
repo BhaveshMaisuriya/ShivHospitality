@@ -99,252 +99,7 @@
     <script defer src="assets/js//notiflix-aio-2.7.0.min.js"></script>
     <script type="text/javascript" src="assets/js/validate.js"></script>
     <script type="text/javascript" defer src="assets/js/IISMethods.js"></script>
-    <script>
-      //india mobile no validation
-      jQuery.validator.addMethod(
-        "mobileno",
-        function (value, element) {
-          return this.optional(element) || /^[0]?[6789]\d{9}$/i.test(value);
-        },
-        "Invalid mobile no"
-      );
-      //only for number
-      jQuery.validator.addMethod(
-        "numberonly",
-        function (value, element) {
-          return this.optional(element) || /^[0-9]+$/i.test(value);
-        },
-        "Invalid Number"
-      );
 
-      function numbonly(e) {
-        var k = e.which;
-        var ok =
-          (k >= 48 && k <= 57) || // 0-9
-          k == 8 || //backspace
-          k == 0 || //arrow key
-          k == 13 || //enter
-          k == 46; //. sign
-        if (!ok) {
-          e.preventDefault();
-        }
-      }
-      $("body").on("click", ".close-button-modal", function () {
-        $(".map-details-modal").addClass("hidden");
-      });
-      $("body").on("click", ".btnenquiry", function () {
-        $(".map-details-modal").removeClass("hidden");
-        var eventid = $(this).data("id");
-        var portfolioid = $(this).data("portfolioid");
-        $("#enquiryForm #eventdate").val("2025-06-18");
-        // listevent(eventid, portfolioid);
-        listportfolio(portfolioid);
-      });
-
-      function listevent(eventid, portfolioid) {}
-
-      function listportfolio(portfolioid) {
-        var pagename = getpagename();
-        var headersdata = {
-          Accept: "application/json",
-          platform: 4,
-          userpagename: pagename,
-          useraction: "",
-          masterlisting: false,
-          responsetype: "HTML",
-        };
-        formdata = new FormData();
-        formdata.append("action", "listportfolio");
-        // formdata.append("portfolioid", portfolioid);
-        ajaxrequest(
-          "POST",
-          "https://www.vhhospitality.net/api/v1.0/" + "event",
-          formdata,
-          headersdata,
-          Onsuccesslistportfolio,
-          OnErrorlistportfolio
-        );
-
-        function Onsuccesslistportfolio(content) {
-          var JsonData = JSON.stringify(content);
-          var resultdata = jQuery.parseJSON(JsonData);
-
-          var htmldata = "";
-          if (resultdata.status == 0) {
-            var htmldata = '<option value="">Select One</option>';
-            $("#portfolioid").html(htmldata);
-          } else if (resultdata.status == 1) {
-            var htmldata = '<option value="">Select One</option>';
-            htmldata += resultdata.data;
-            $("#portfolioid").html(htmldata);
-            // $('#portfolioid').selec2();
-            listevent("", $("#portfolioid :selected").val());
-          }
-        }
-
-        function OnErrorlistportfolio(content) {
-          //$('#pre-loader').fadeOut();
-          //ajaxrequest("POST",'https://www.vhhospitality.net//views/404','','',OnsuccessRender,OnErrorRender);
-        }
-      }
-      $("#portfolioid").on("change", function () {
-        var portfolioid = $("#portfolioid :selected").val();
-        listevent("", portfolioid);
-      });
-      if ($("#enquiryForm").length) {
-        $("#enquiryForm").validate({
-          rules: {
-            fullname: {
-              required: true,
-            },
-            email: {
-              required: true,
-              email: true,
-            },
-            /* eventid: {
-                  required: true
-              }, */
-            noofpeople: {
-              required: true,
-            },
-            eventdate: {
-              required: true,
-            },
-            portfolioid: {
-              required: true,
-            },
-          },
-          messages: {
-            fullname: {
-              required: "Full Name is required",
-            },
-            email: {
-              required: "Email Address is required",
-            },
-            /* eventid: {
-                  required: "Type of Event is required",
-              }, */
-            noofpeople: {
-              required: "People is required",
-            },
-            eventdate: {
-              required: "Date of Event is required",
-            },
-            portfolioid: {
-              required: "Property Name is required",
-            },
-          },
-          submitHandler: function (form) {
-            $("#loader").show();
-            var eventname = "";
-            if ($("#eventid :selected").val() != "") {
-              // var eventname = $('#eventid :selected').data('eventname');
-              var eventname = $("#eventid :selected").text();
-            }
-            var portfolioname = $("#portfolioid :selected").text();
-            var pagename = getpagename();
-            var useraction = "addright";
-            formdata = new FormData(form);
-            formdata.append("action", "inserteventdata");
-            formdata.append("eventname", eventname);
-            formdata.append("portfolioname", portfolioname);
-
-            var headersdata = {
-              Accept: "application/json",
-              platform: 4,
-              userpagename: pagename,
-              useraction: useraction,
-              masterlisting: false,
-            };
-            ajaxrequest(
-              "POST",
-              "https://www.vhhospitality.net/api/v1.0/" + "event",
-              formdata,
-              headersdata,
-              OnsuccesseventDataSubmit,
-              OnErrorevent
-            );
-
-            function OnsuccesseventDataSubmit(data) {
-              var JsonData = JSON.stringify(data);
-              var resultdata = jQuery.parseJSON(JsonData);
-              $("#loader").hide();
-
-              if (resultdata.status == 0) {
-                //alertify(resultdata.message, 0);
-                Notiflix.Notify.Failure(resultdata.message);
-              } else if (resultdata.status == 1) {
-                $("#enquiryForm").validate().resetForm();
-                $("#enquiryForm").trigger("reset");
-                Notiflix.Notify.Success(resultdata.message);
-                $(".map-details-modal").addClass("hidden");
-              }
-            }
-
-            function OnErrorevent(content) {
-              // ajaxrequest("POST", "'https://www.vhhospitality.net//views/404'", '', '', OnsuccessRender, OnErrorRender);
-            }
-          },
-        });
-      }
-
-      if ($("#subscribeForm").length) {
-        $("#subscribeForm").validate({
-          rules: {
-            subscribeemail: {
-              required: true,
-              email: true,
-            },
-          },
-          messages: {
-            subscribeemail: {
-              required: "Email is required",
-            },
-          },
-          submitHandler: function (form) {
-            $("#loader").show();
-
-            var pagename = getpagename();
-            var useraction = "addright";
-            formdata = new FormData(form);
-            formdata.append("action", "insertsubscribeemaildata");
-            var headersdata = {
-              Accept: "application/json",
-              platform: 4,
-              userpagename: pagename,
-              useraction: useraction,
-              masterlisting: false,
-            };
-            ajaxrequest(
-              "POST",
-              "https://www.vhhospitality.net/api/v1.0/" + "contactus",
-              formdata,
-              headersdata,
-              OnsuccesssubscribeDataSubmit,
-              OnErrorsubscribe
-            );
-
-            function OnsuccesssubscribeDataSubmit(data) {
-              var JsonData = JSON.stringify(data);
-              var resultdata = jQuery.parseJSON(JsonData);
-              $("#loader").hide();
-
-              if (resultdata.status == 0) {
-                alertify(resultdata.message, 0);
-              } else if (resultdata.status == 1) {
-                $("#subscribeForm").validate().resetForm();
-                $("#subscribeForm").trigger("reset");
-                Notiflix.Notify.Success(resultdata.message);
-              }
-            }
-
-            function OnErrorsubscribe(content) {
-              // ajaxrequest("POST", "'https://www.vhhospitality.net//views/404'", '', '', OnsuccessRender, OnErrorRender);
-            }
-          },
-        });
-      }
-    </script>
     <script type="text/javascript" src="assets/js/slick.min.js"></script>
     <script type="text/javascript" src="assets/js/lazysizes.min.js"></script>
     <script>
@@ -466,26 +221,42 @@
       <header class="header" id="header">
         <div class="container">
           <div class="header-content">
-            <nav class="navbar">
-              <div class="nav-brand">
-                <a href="home.html" class="nav-logo d-flex"
-                  ><img src="assets/images/logo/logo.svg" alt="logo" alt="logo"
+            <nav
+              class="navbar"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div
+                class="nav-brand"
+                style="flex: 1; display: flex; justify-content: center"
+              >
+                <a href="index.html" class="nav-logo d-flex"
+                  ><img
+                    src="assets/images/logo/logo.png"
+                    alt="Shiv Hospitality"
                 /></a>
               </div>
-              <div class="navbar-collapse">
-                <div class="nav-brand nav-brand-mobile">
-                  <a href="home.html" class="nav-logo">
-                    <img
-                      src="assets/uploads/2023/12/logo/logo-1702528517_1703737453.png"
-                      alt="Shiv Hospitality"
-                  /></a>
-                </div>
-                <ul class="navbar-nav">
+              <div
+                class="navbar-collapse"
+                style="flex: 2; display: flex; justify-content: center"
+              >
+                <ul
+                  class="navbar-nav"
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                  "
+                >
                   <li class="nav-item">
                     <a
                       class="nav-link head-link lihome active"
                       aria-current="page"
-                      href="home.html"
+                      href="index.html"
                       >Home</a
                     >
                   </li>
@@ -591,7 +362,7 @@
                     <a
                       class="lihome d-flex"
                       aria-current="page"
-                      href="home.html"
+                      href="index.html"
                       ><span class="mega-menu-icon"
                         ><img
                           src="assets/images/header-menu/home-icon.png"
@@ -651,13 +422,38 @@
         <section class="hero-section">
           <div class="content ind-hero-slider">
             <div class="slide-hero">
-              <div class="hero-slide">
+              <div class="hero-slide" style="position: relative">
                 <img
                   decoding="async"
                   class=""
-                  src="assets/uploads/2024/04/slider/db6c0f2b-5cc8-41f5-81db-8d3abd029e02_1713890510.png"
+                  src="assets/images/slider/slider-header-1.jpg"
                   alt="Sheraton lisle lobby"
-                  alt="Sheraton lisle lobby"
+                  style="width: 100%; display: block"
+                />
+                <div
+                  class="animated-text"
+                  style="
+                    position: absolute;
+                    top: 20%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: #fff;
+                    font-size: 2.5rem;
+                    font-weight: bold;
+                    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+                    animation: fadeInUp 2s ease-out;
+                  "
+                >
+                  Welcome to Shiv Hospitality
+                </div>
+              </div>
+            </div>
+            <div class="slide-hero">
+              <div class="hero-slide">
+                <img
+                  decoding="async"
+                  class=""
+                  src="assets/images/slider/slider-header-2.jpg"
                 />
               </div>
             </div>
@@ -666,9 +462,7 @@
                 <img
                   decoding="async"
                   class=""
-                  src="assets/uploads/2024/04/slider/microsoftteams-image--7-_1713889086.png"
-                  alt="Hilton Rosemont bar"
-                  alt="Hilton Rosemont bar"
+                  src="assets/images/slider/slider-header-3.jpg"
                 />
               </div>
             </div>
@@ -677,9 +471,7 @@
                 <img
                   decoding="async"
                   class=""
-                  src="assets/uploads/2024/04/slider/mspos-lobby-lounge-5680-hor-pano_1713889694.jpg"
-                  alt="Sheraton Bloomington lela wine room"
-                  alt="Sheraton Bloomington lela wine room"
+                  src="assets/images/slider/slider-header-4.jpg"
                 />
               </div>
             </div>
@@ -688,9 +480,7 @@
                 <img
                   decoding="async"
                   class=""
-                  src="assets/uploads/2024/04/slider/slider-01-1712896814_1713154661.webp"
-                  alt="Four Points Morgan photographs"
-                  alt="Four Points Morgan photographs"
+                  src="assets/images/slider/slider-header-5.jpg"
                 />
               </div>
             </div>
@@ -699,9 +489,7 @@
                 <img
                   decoding="async"
                   class=""
-                  src="assets/uploads/2024/04/slider/lobby--2-_1713890820.jpg"
-                  alt="DTOB lobby"
-                  alt="DTOB lobby"
+                  src="assets/images/slider/slider-header-6.jpg"
                 />
               </div>
             </div>
@@ -710,9 +498,7 @@
                 <img
                   decoding="async"
                   class=""
-                  src="assets/uploads/2024/04/slider/bar--4-_1713889982.jpg"
-                  alt="DTOB bar"
-                  alt="DTOB bar"
+                  src="assets/images/slider/slider-header-3.jpg"
                 />
               </div>
             </div>
@@ -721,20 +507,7 @@
                 <img
                   decoding="async"
                   class=""
-                  src="assets/uploads/2024/04/slider/microsoftteams-image--4-1712895830_1713154955.webp"
-                  alt="Hyatt lobby"
-                  alt="Hyatt lobby"
-                />
-              </div>
-            </div>
-            <div class="slide-hero">
-              <div class="hero-slide">
-                <img
-                  decoding="async"
-                  class=""
-                  src="assets/uploads/2024/04/slider/microsoftteams-image-1712896284_1713155133.webp"
-                  alt="MOB lobby"
-                  alt="MOB lobby"
+                  src="assets/images/slider/slider-header-2.jpg"
                 />
               </div>
             </div>
@@ -749,9 +522,7 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/double-tree-bloomington-minneapolis-south-1704710631_1713156483.webp"
-                      alt="Double Tree Bloomington Minneapolis South"
-                      alt="Double Tree Bloomington Minneapolis South"
+                      src="assets/images/brands/wyndham.png"
                     />
                   </div>
                 </div>
@@ -760,9 +531,7 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/hilton-rosemont-1704710646_1713156494.webp"
-                      alt="Hilton Rosemont"
-                      alt="Hilton Rosemont"
+                      src="assets/images/brands/bw.png"
                     />
                   </div>
                 </div>
@@ -771,9 +540,7 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/hyatt-lisle-1704710659_1713156506.webp"
-                      alt="Hyatt Lisle"
-                      alt="Hyatt Lisle"
+                      src="assets/images/brands/best-value.png"
                     />
                   </div>
                 </div>
@@ -782,9 +549,7 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/lisle-llc-sheraton-lisle-1704710673_1713156521.webp"
-                      alt="Lisle LLC Sheraton Lisle"
-                      alt="Lisle LLC Sheraton Lisle"
+                      src="assets/images/brands/hilton.png"
                     />
                   </div>
                 </div>
@@ -793,9 +558,7 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/marriott-oak-brook-1704710689_1713156537.webp"
-                      alt="Marriott Oak Brook"
-                      alt="Marriott Oak Brook"
+                      src="assets/images/brands/wyndham.png"
                     />
                   </div>
                 </div>
@@ -804,9 +567,7 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/wyndham-1704710710_1713156548.webp"
-                      alt="Wyndham"
-                      alt="Wyndham"
+                      src="assets/images/brands/bw.png"
                     />
                   </div>
                 </div>
@@ -815,9 +576,7 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/four-points-by-sheraton-1709047941_1713156557.webp"
-                      alt="Four Points logo"
-                      alt="Four Points logo"
+                      src="assets/images/brands/hilton.png"
                     />
                   </div>
                 </div>
@@ -826,16 +585,47 @@
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/04/ourbrandmaster/hilton-logo-1709048147_1713156580.webp"
-                      alt="Hilton Rosemont bar"
-                      alt="Hilton Rosemont bar"
+                      src="assets/images/brands/best-value.png"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/images/brands/wyndham.png"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/images/brands/hilton.png"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/images/brands/bw.png"
+                    />
+                  </div>
+                </div>
+                <div class="slideitem">
+                  <div class="slide-img">
+                    <img
+                      decoding="async"
+                      class="lazyloaded"
+                      src="assets/images/brands/best-value.png"
                     />
                   </div>
                 </div>
               </div>
-              <!-- <div class="dots-design">
-                                <img src="< ?php echo $config->getImageurl() ?>images/dots.jpg" alt="Dots Design" alt="Dots Design">
-                            </div> -->
             </div>
           </div>
         </section>
@@ -845,22 +635,27 @@
               <div class="h1-before h1-after"></div>
               <div class="our-team-body d-flex">
                 <div class="our-team-dec">
-                  <h3 class="h1-style">About Us</h3>
+                  <h3 class="h1-style">Who we are</h3>
                   <p dir="ltr">
-                    Our organizational culture is designed to empower creative
-                    and skilled teams, enabling them to thrive in competitive
-                    markets. Fueled by passion, we seamlessly blend industry
-                    knowledge with practical management. With a focus on seizing
-                    opportunities, we actively contribute to the growth of both
-                    our teams and various properties.
+                    At Shiv Hospitality, we are dedicated to delivering
+                    exceptional guest experiences with a blend of comfort,
+                    elegance, and traditional Indian warmth. Our portfolio of
+                    hotels offers world-class amenities, personalized service,
+                    and memorable stays for both leisure and business travelers.
+                    With a commitment to excellence, innovation, and
+                    sustainability, we aim to set new benchmarks in the
+                    hospitality industry. At the heart of our values lies a deep
+                    respect for our guests and a passion for creating lasting
+                    impressions.
                   </p>
                   <p dir="ltr">
-                    Collaborating with prominent names like Hilton, Marriott,
-                    Hyatt, and Wyndham, we efficiently manage properties across
-                    diverse locations. Our adaptable plans for sales, marketing,
-                    and revenue pivot with market changes, ensuring swift
-                    adaptation. Committed to continuous growth, we actively seek
-                    new opportunities, maintaining a legacy of excellence.
+                    Collaborating with prominent names like Hilton, Best
+                    Western, Sonesta, and Wyndham, we efficiently manage
+                    properties across diverse locations. Our adaptable plans for
+                    sales, marketing, and revenue pivot with market changes,
+                    ensuring swift adaptation. Committed to continuous growth,
+                    we actively seek new opportunities, maintaining a legacy of
+                    excellence.
                   </p>
                   <p dir="ltr">
                     Going beyond management, we cultivate strong partnerships
@@ -884,18 +679,15 @@
                 <div class="our-team-img about-ind-img relative">
                   <span class="ind-team-01">
                     <img
-                      decoding="async"
                       class="lazyloaded"
-                      src="assets/uploads/2024/02/contentsetting/about-1_1707732755.webp"
-                      alt="About Us"
-                      alt="About Us"
+                      src="assets/images/index/about_2.jpg"
                     />
                   </span>
                   <span class="ind-team-02">
                     <img
                       decoding="async"
                       class="lazyloaded"
-                      src="assets/images/index/about_2.webp"
+                      src="assets/images/index/about_1.jpg"
                       alt="About Us"
                       alt="About Us"
                     />
@@ -1626,7 +1418,6 @@
                 <div class="our-team-img">
                   <span class="ind-team-01">
                     <img
-                      decoding="async"
                       class="lazyloaded"
                       src="assets/uploads/2024/04/contentsetting/whatsapp-image-2024-04-11-at-10-50-55-pm_1712942074.jpg"
                       alt="Our Team"
@@ -1653,19 +1444,11 @@
                           decoding="async"
                           class="lazyloaded"
                           src="assets/images/index/arrow-left.png"
-                          alt="arrow"
                           alt="arrow" /></span
                     ></a>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-        <section class="ind-about">
-          <div class="theme-container">
-            <div class="content">
-              <div class="h1-before"></div>
             </div>
           </div>
         </section>
@@ -1698,29 +1481,28 @@
                 </div>
               </form>
             </div>
-            <!-- <hr> -->
+            <hr />
             <div class="footer-bottom">
               <div class="footer-body">
                 <div class="footer-logo d-flex">
                   <span class="d-block">
-                    <a href="home.html" class="nav-logo inline-block"
+                    <a href="index.html" class="nav-logo inline-block"
                       ><img
                         decoding="async"
                         class="lazyloaded"
-                        src="assets/images/logo/logo.svg"
-                        alt="logo"
+                        src="assets/images/logo/logo.png"
                         alt="logo"
                     /></a>
-                    <!-- <a href="< ?php echo $config->getWeburl(); ?>home" class="nav-logo inline-block"><img decoding="async" class="lazyloaded" src="< ?php echo $config->getImageurl() . $CompanyInfo->getFooterLogoimg() ?>" alt="logo" alt="logo"></a> -->
                   </span>
-                  <!-- <p>< ?php echo $footertagline['description']; ?></p> -->
                 </div>
                 <div class="footer-menu">
-                  <h3>Quick Links</h3>
                   <div class="footer-menu-group">
                     <ul class="">
                       <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="home.html"
+                        <a
+                          class="nav-link"
+                          aria-current="page"
+                          href="index.html"
                           >Home</a
                         >
                       </li>
@@ -1752,7 +1534,6 @@
                         target="_blank"
                         ><span
                           ><img
-                            decoding="async"
                             class="lazyloaded"
                             src="assets/images/footer/location.png"
                             alt="location"
@@ -1764,7 +1545,6 @@
                       <a class="nav-link" href="mailto:info@shivhospitality.net"
                         ><span
                           ><img
-                            decoding="async"
                             class="lazyloaded"
                             src="assets/images/footer/email.png"
                             alt="email"
@@ -1783,10 +1563,8 @@
                         target="_blank"
                         ><span
                           ><img
-                            decoding="async"
                             class="lazyloaded"
                             src="assets/images/footer/facebook-icon.svg"
-                            alt="facebook"
                             alt="facebook" /></span
                       ></a>
                     </li>
@@ -1797,10 +1575,8 @@
                         target="_blank"
                         ><span
                           ><img
-                            decoding="async"
                             class="lazyloaded"
                             src="assets/images/footer/in-icon.svg"
-                            alt="linkedin"
                             alt="linkedin" /></span
                       ></a>
                     </li>
