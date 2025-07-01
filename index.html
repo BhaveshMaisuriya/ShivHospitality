@@ -3,6 +3,41 @@
 <meta http-equiv="content-type"
       content="text/html;charset=UTF-8" />
 <head>
+  <style>
+    .wave-text span {
+      display: inline-block;
+      font-size: 4rem;
+      animation: wave 2s ease-in-out infinite;
+    }
+
+    .wave-text span:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .wave-text span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .wave-text span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    .wave-text span:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+
+    @keyframes wave {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+  </style>
   <link rel="stylesheet"
         type="text/css"
         href="assets/css/megamenuv01.css"
@@ -359,8 +394,9 @@
                    src="assets/images/slider/slider-header-1.jpg"
                    alt="Sheraton lisle lobby"
                    style="width: 100%; display: block" />
-        
-              <div class="wave-container animated-text"   style="
+
+              <div class="wave-container animated-text"
+                   style="
                     position: absolute;
                     top: 20%;
                     left: 50%;
@@ -370,10 +406,10 @@
                     font-weight: bold;
                     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
                   ">
-    <h1 class="wave-text">
-        <span>Welcome</span><span>to</span><span>Shiv</span><span>Hospitality</span>
-    </h1>
-</div>
+                <h1 class="wave-text">
+                  <span>Welcome</span><span>to</span><span>Shiv</span><span>Hospitality</span>
+                </h1>
+              </div>
             </div>
           </div>
           <div class="slide-hero">
@@ -808,7 +844,7 @@
                            alt="Hampton inn by Hilton, Caryville"
                            title="Hampton inn by Hilton, Caryville" />
                       <div class="flip-card-details">
-                          <h3>Hampton inn by Hilton, </h3>
+                        <h3>Hampton inn by Hilton, </h3>
                         <span>Caryville ,TN </span>
                         <div class="our-team-btn flip-mobile-btn">
                           <a href="#"
